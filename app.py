@@ -14,14 +14,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 @app.route('/sendvalue', methods=['POST', 'GET'])
 def results():
-    #collection.insert_one(request.form)
-    print(request.headers)
-    print(request.data)
-    print(request.args)
-    print(request.form)
-    print(request.endpoint)
-    print(request.method)
-    print(request.remote_addr)
+    collection.insert_one(request.data)
     return ''
 
 
