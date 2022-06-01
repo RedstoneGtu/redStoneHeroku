@@ -21,7 +21,8 @@ def results():
     req_dict['raw'] = [[], [], [], []]
     for i in range(4):
         for elm in req_dict['base64'][i]:
-            req_dict['raw'][i].append(base64.b64decode(elm))
+            num = int(base64.b64decode(elm))
+            req_dict['raw'][i].append(num)
     collection.insert_one(req_dict)
     return ''
 
