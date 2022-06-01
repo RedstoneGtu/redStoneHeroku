@@ -3,6 +3,7 @@ from pymongo.server_api import ServerApi
 from flask import Flask, request
 import os
 import json
+import base64
 
 MONGODB_URL = 'mongodb+srv://redstone_app:huseyinnodejs@cluster0.k4qd1.mongodb.net/?retryWrites=true&w=majority'
 app = Flask(__name__)
@@ -17,6 +18,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 def results():
     print(request.data)
     req_dict = json.loads(request.data)
+    req_dict['raw'] = [[], [], [], []]
+    for i in range(4):
+        for elm in req_dict['base64'][i]:
+            req_dict['raw'][i].append(base64.b64decode(elm))
     collection.insert_one(req_dict)
     return ''
 
