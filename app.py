@@ -19,10 +19,11 @@ def results():
     print(request.data)
     req_dict = json.loads(request.data)
     req_dict['raw'] = [[], [], [], []]
-    for i in range(4):
-        for elm in req_dict['base64'][i]:
-            num = int(base64.b64decode(elm))
-            req_dict['raw'][i].append(num)
+    for elm in req_dict['base64']:
+        vals = base64.b64decode(elm).decode('utf-8').split(',')
+        nums = [int(x) for x in vals]
+        for i in range(4):
+            req_dict['raw'][i].append(nums[i])
     collection.insert_one(req_dict)
     return ''
 
