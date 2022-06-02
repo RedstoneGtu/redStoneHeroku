@@ -27,8 +27,11 @@ def results():
                 req_dict['raw'][i].append(nums[i])
         except:
             pass
-    collection.insert_one(req_dict)
-    return 'Hiphop'
+    if 'result' in req_dict.keys():
+        return 'Hiphop'
+    else:
+        collection.insert_one(req_dict)
+        return 'Added to the database'
 
 
 if __name__ == '__main__':
