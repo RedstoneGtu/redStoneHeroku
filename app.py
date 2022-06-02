@@ -28,7 +28,7 @@ def results():
         except:
             pass
     collection.insert_one(req_dict)
-    return ''
+    return 'Hiphop'
 
 
 if __name__ == '__main__':
