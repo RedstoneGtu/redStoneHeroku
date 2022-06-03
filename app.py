@@ -55,7 +55,7 @@ def predict_fun(col):
 def proba_to_str(pred):
     str_ = ''
     for i in range(len(pred)):
-        str_ += '{:s}: {:d}%\n'.format(NAMES[i], int(100 * pred[i]))
+        str_ += '{:s}: {:d}%\n'.format(NAMES[i], int(100 * pred[0][i]))
     return str_
 
 basedir = os.path.abspath(os.path.dirname(__file__))
