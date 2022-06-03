@@ -68,6 +68,10 @@ def results():
             print('err')
             pass
     if 'result' not in req_dict.keys():
+        for i in range(4):
+            length = len(req_dict['raw'][i])
+            m = length % 6
+            req_dict['raw'][i] = req_dict['raw'][i][:length - m]
         prediction = predict_fun(req_dict)
         return NAMES[prediction]
     else:
