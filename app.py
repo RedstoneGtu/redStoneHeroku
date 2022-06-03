@@ -28,7 +28,7 @@ def results():
         except:
             print('err')
             pass
-    if 'result' in req_dict.keys():
+    if 'result' not in req_dict.keys():
         return 'Hiphop'
     else:
         collection.insert_one(req_dict)
