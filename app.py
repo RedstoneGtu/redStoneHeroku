@@ -49,8 +49,14 @@ def predict_fun(col):
         x.append(b[i].mean(axis=1))
     print(np.array(b[0]).shape)
     last = pd.DataFrame(x)
-    pred = pickle_mo.predict(last)
+    pred = pickle_mo.predict_proba(last)
     return pred
+
+def proba_to_str(pred):
+    str_ = ''
+    for i in range(len(pred)):
+        str_ += '{:s}: {:d}%\n'.format(NAMES[i], int(100 * pred[i]))
+    return str_
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -76,7 +82,7 @@ def results():
             m = length % 6
             req_dict['raw'][i] = req_dict['raw'][i][:length - m]
         prediction = predict_fun(req_dict)
-        return NAMES[prediction[0]]
+        return proba_to_str(prediction)
     else:
         collection.insert_one(req_dict)
         return 'Added to the database'
