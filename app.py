@@ -26,6 +26,7 @@ def results():
             for i in range(4):
                 req_dict['raw'][i].append(nums[i])
         except:
+            print(err)
             pass
     if 'result' in req_dict.keys():
         return 'Hiphop'
