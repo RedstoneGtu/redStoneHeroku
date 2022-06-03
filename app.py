@@ -70,10 +70,12 @@ def results():
     if 'result' not in req_dict.keys():
         for i in range(4):
             length = len(req_dict['raw'][i])
+            if 600 > length:
+                return 'Sorry, your data is too short.'
             m = length % 6
             req_dict['raw'][i] = req_dict['raw'][i][:length - m]
         prediction = predict_fun(req_dict)
-        return NAMES[prediction]
+        return NAMES[prediction[0]]
     else:
         collection.insert_one(req_dict)
         return 'Added to the database'
