@@ -73,7 +73,6 @@ def add_fft(req_dict):
     SPLIT = len(req_dict['raw'][0]) // 6
     for i in range(4):
         fft = rfft(req_dict['raw'][i][:1200])
-        filter_fft
         small_fft = np.array([])
         for j in range(6):
             begin = SPLIT * j
