@@ -127,7 +127,8 @@ def results():
         res = res.replace('[', '')
         res = res.replace(']', '')
         res = [1 == int(s.strip()) for s in res.split(',')]
-        req_dict['result'][i] = res
+        req_dict['result'] = []
+        req_dict['result'].append(res)
         collection.insert_one(req_dict)
         return 'Added to the database'
 
