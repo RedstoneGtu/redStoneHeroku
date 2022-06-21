@@ -31,7 +31,7 @@ def predict_fun(col):
     a = []
     last = [col]
     df_last = pd.DataFrame(last)
-    raw_ = df_last['raw']
+    raw_ = df_last["irfft_small"] + df_last["irfft"]
     last = []
     last.append([])
     last = list((raw_))
@@ -41,8 +41,12 @@ def predict_fun(col):
         for j in range(len(a[i][0])):
             b[i].append(a[i][0][j])
             b[i].append(a[i][1][j])
+            b[i].append(a[i][2][j])
+            b[i].append(a[i][3][j])
+    m = len(np.array(b[i])) % 12
+    b[0] = b[0][:len(np.array(b[i])) - m]
     for i in range(len(b)):
-        b[i] = np.split(np.array(b[i]),6)
+        b[i] = np.split(np.array(b[i]),12)
     b = np.array(b)
     x = []
     for i in range(len(b)): 
@@ -51,9 +55,6 @@ def predict_fun(col):
     last = pd.DataFrame(x)
     pred = pickle_mo.predict_proba(last)
     return pred
-
-def predict_dummy(col):
-    return [[0.1, 0.2, 0.1, 0.25, 0.35]]
 
 def proba_to_str(pred):
     str_ = ''
@@ -120,7 +121,7 @@ def results():
                 return 'Sorry, your data is too short.'
             m = length % 6
             req_dict['raw'][i] = req_dict['raw'][i][:length - m]
-        prediction = predict_dummy(req_dict)
+        prediction = predict_fun(req_dict)
         return proba_to_str(prediction)
     else:
         res = req_dict['result']
