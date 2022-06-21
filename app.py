@@ -71,8 +71,8 @@ def add_fft(req_dict):
             begin = SPLIT * j
             end = SPLIT * (j + 1)
             np.append(small_fft, np.fft.rfft(req_dict['raw'][i][begin : end], norm='forward'))
-        req_dict['rfft'][i] = fft.tolist()
-        req_dict['rfft_small'][i] = small_fft.tolist()
+        req_dict['rfft'][i] = np.square(np.abs(fft)).tolist()
+        req_dict['rfft_small'][i] = np.square(np.abs(small_fft)).tolist()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
