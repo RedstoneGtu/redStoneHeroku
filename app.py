@@ -87,9 +87,9 @@ def add_fft(req_dict):
             begin = SPLIT * j
             end = SPLIT * (j + 1)
             sfft = rfft(req_dict['raw'][i][begin : end])
-            temp = np.convolve(sfft, np.ones(10, dtype=int), 'valid')[20:]
-            idx = np.argmax(temp) + 20 + 5
-            filter_range(sfft, idx - 25, idx + 25)
+            temp = np.convolve(sfft, np.ones(6, dtype=int), 'valid')[10:]
+            idx = np.argmax(temp) + 10 + 3
+            filter_range(sfft, idx - 13, idx + 13)
             small_fft = np.append(small_fft, sfft)
             small_ifft = np.append(small_ifft, irfft(sfft))
         req_dict['rfft_small'][i] = small_fft.tolist()
