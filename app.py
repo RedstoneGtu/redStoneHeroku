@@ -61,25 +61,39 @@ def proba_to_str(pred):
         str_ += '{:s}: {:d}%\n'.format(NAMES[i], int(100 * pred[0][i]))
     return str_
 
-def filter_fft(arr, idx, d):
+def filter_range(arr, begin, end):
     L = len(arr)
-    for i in range(idx - d, idx + d + 1):
-        if 0 <= i < L:
-            arr[i] = 0
+    for i in range(0, begin):
+        arr[i] = 0
+    for i in range(end, L):
+        arr[i] = 0
 
 def add_fft(req_dict):
     req_dict['rfft'] = [[], [], [], []]
+    req_dict['irfft'] = [[], [], [], []]
     req_dict['rfft_small'] = [[], [], [], []]
+    req_dict['irfft_small'] = [[], [], [], []]
     SPLIT = len(req_dict['raw'][0]) // 6
     for i in range(4):
         fft = rfft(req_dict['raw'][i])
+        temp = np.convolve(fft, np.ones(10, dtype=int), 'valid')[20:]
+        idx = np.argmax(temp) + 20 + 5
+        filter_range(fft, idx - 25, idx + 25)
+        req_dict['rfft'][i] = fft.tolist()
+        req_dict['irfft'] = irfft(fft).tolist()
         small_fft = np.array([])
+        small_ifft = np.array([])
         for j in range(6):
             begin = SPLIT * j
             end = SPLIT * (j + 1)
-            small_fft = np.append(small_fft, rfft(req_dict['raw'][i][begin : end]))
-        req_dict['rfft'][i] = np.square(np.abs(fft)).tolist()
-        req_dict['rfft_small'][i] = np.square(np.abs(small_fft)).tolist()
+            sfft = rfft(req_dict['raw'][i][begin : end])
+            temp = np.convolve(sfft, np.ones(10, dtype=int), 'valid')[20:]
+            idx = np.argmax(temp) + 20 + 5
+            filter_range(sfft, idx - 25, idx + 25)
+            small_fft = np.append(small_fft, sfft)
+            small_ifft = np.append(small_ifft, irfft(sfft))
+        req_dict['rfft_small'][i] = small_fft.tolist()
+        req_dict['irfft_small'][i] = small_ifft.tolist()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
