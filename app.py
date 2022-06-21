@@ -9,6 +9,7 @@ import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from scipy.fft import rfft, irfft
 
 NAMES = {
     0: 'Classic',
@@ -60,17 +61,24 @@ def proba_to_str(pred):
         str_ += '{:s}: {:d}%\n'.format(NAMES[i], int(100 * pred[0][i]))
     return str_
 
+def filter_fft(arr, idx, d):
+    L = len(arr)
+    for i in range(idx - d, idx + d + 1):
+        if 0 <= i < L:
+            arr[i] = 0
+
 def add_fft(req_dict):
     req_dict['rfft'] = [[], [], [], []]
     req_dict['rfft_small'] = [[], [], [], []]
     SPLIT = len(req_dict['raw'][0]) // 6
     for i in range(4):
-        fft = np.fft.rfft(req_dict['raw'][i], norm='forward')
+        fft = rfft(req_dict['raw'][i][:1200])
+        filter_fft
         small_fft = np.array([])
         for j in range(6):
             begin = SPLIT * j
             end = SPLIT * (j + 1)
-            np.append(small_fft, np.fft.rfft(req_dict['raw'][i][begin : end], norm='forward'))
+            small_fft = np.append(small_fft, rfft(req_dict['raw'][i][begin : end]))
         req_dict['rfft'][i] = np.square(np.abs(fft)).tolist()
         req_dict['rfft_small'][i] = np.square(np.abs(small_fft)).tolist()
 
@@ -102,6 +110,11 @@ def results():
         prediction = predict_dummy(req_dict)
         return proba_to_str(prediction)
     else:
+        res = req_dict['result']
+        res = res.replace('[', '')
+        res = res.replace(']', '')
+        res = [1 == int(s.strip()) for s in res.split(',')]
+        req_dict['raw'][i] = res
         collection.insert_one(req_dict)
         return 'Added to the database'
 
