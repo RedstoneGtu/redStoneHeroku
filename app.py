@@ -80,7 +80,7 @@ def add_fft(req_dict):
         idx = np.argmax(temp) + 20 + 5
         filter_range(fft, idx - 25, idx + 25)
         #req_dict['rfft'][i] = fft.tolist()
-        req_dict['irfft'] = irfft(fft).tolist()
+        req_dict['irfft'][i] = irfft(fft).tolist()
         small_fft = np.array([])
         small_ifft = np.array([])
         for j in range(6):
@@ -128,7 +128,7 @@ def results():
         res = res.replace(']', '')
         res = [1 == int(s.strip()) for s in res.split(',')]
         req_dict['result'] = []
-        req_dict['result'].append(res)
+        req_dict['result'] = res
         collection.insert_one(req_dict)
         return 'Added to the database'
 
