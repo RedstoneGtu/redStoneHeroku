@@ -72,7 +72,7 @@ def add_fft(req_dict):
     req_dict['rfft_small'] = [[], [], [], []]
     SPLIT = len(req_dict['raw'][0]) // 6
     for i in range(4):
-        fft = rfft(req_dict['raw'][i][:1200])
+        fft = rfft(req_dict['raw'][i])
         small_fft = np.array([])
         for j in range(6):
             begin = SPLIT * j
@@ -89,7 +89,7 @@ def results():
     req_dict = json.loads(request.data)
     req_dict['version'] = 2
     req_dict['raw'] = [[], [], [], []]
-    for line in req_dict['raw_string'].split(';')[:1200]:
+    for line in req_dict['raw_string'].split(';')[:-1]:
         try:
             vals = line.split(',')
             for i in range(4):
