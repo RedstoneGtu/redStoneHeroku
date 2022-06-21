@@ -80,16 +80,18 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 def results():
     print(request.data)
     req_dict = json.loads(request.data)
+    req_dict['version'] = 2
     req_dict['raw'] = [[], [], [], []]
-    for line in req_dict['raw_string'].split(';')[:-1]:
+    for line in req_dict['raw_string'].split(';')[:1200]:
         try:
             vals = line.split(',')
             for i in range(4):
                 req_dict['raw'][i].append(int(vals[i]))
-            add_fft(req_dict)
         except:
             print('err')
             pass
+    for i in range(4):
+        add_fft(req_dict)
     if 'result' not in req_dict.keys():
         for i in range(4):
             length = len(req_dict['raw'][i])
