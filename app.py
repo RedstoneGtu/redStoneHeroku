@@ -69,9 +69,9 @@ def filter_range(arr, begin, end):
         arr[i] = 0
 
 def add_fft(req_dict):
-    req_dict['rfft'] = [[], [], [], []]
+    #req_dict['rfft'] = [[], [], [], []]
     req_dict['irfft'] = [[], [], [], []]
-    req_dict['rfft_small'] = [[], [], [], []]
+    #req_dict['rfft_small'] = [[], [], [], []]
     req_dict['irfft_small'] = [[], [], [], []]
     SPLIT = len(req_dict['raw'][0]) // 6
     for i in range(4):
@@ -79,7 +79,7 @@ def add_fft(req_dict):
         temp = np.convolve(fft, np.ones(10, dtype=int), 'valid')[20:]
         idx = np.argmax(temp) + 20 + 5
         filter_range(fft, idx - 25, idx + 25)
-        req_dict['rfft'][i] = fft.tolist()
+        #req_dict['rfft'][i] = fft.tolist()
         req_dict['irfft'] = irfft(fft).tolist()
         small_fft = np.array([])
         small_ifft = np.array([])
@@ -92,7 +92,7 @@ def add_fft(req_dict):
             filter_range(sfft, idx - 13, idx + 13)
             small_fft = np.append(small_fft, sfft)
             small_ifft = np.append(small_ifft, irfft(sfft))
-        req_dict['rfft_small'][i] = small_fft.tolist()
+        #req_dict['rfft_small'][i] = small_fft.tolist()
         req_dict['irfft_small'][i] = small_ifft.tolist()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
