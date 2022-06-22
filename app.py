@@ -59,7 +59,7 @@ def predict_fun(col):
 def proba_to_str(pred):
     str_ = ''
     for i in range(len(pred[0])):
-        str_ += '{:s}: {:.2f}%\n'.format(NAMES[i], 100 * pred[0][i])
+        str_ += '{:s}: {:.2f}%\n'.format(NAMES[i], 100.0 * pred[0][i])
     return str_
 
 def filter_range(arr, begin, end):
